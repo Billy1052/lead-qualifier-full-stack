@@ -1,0 +1,19 @@
+{
+  "name": "lead-qualifier-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx trigger.dev@latest dev",
+    "deploy": "npx trigger.dev@latest deploy",
+    "test-job": "npx tsx Tools/scripts/test-workflow.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@trigger.dev/sdk": "4.4.5"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
