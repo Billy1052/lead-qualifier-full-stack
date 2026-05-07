@@ -3,14 +3,19 @@ import { NextResponse } from "next/server";
 import type { LeadPayload } from "@/lib/types";
 
 export async function POST(req: Request) {
-  const payload: LeadPayload = await req.json();
+  try {
+    const payload: LeadPayload = await req.json();
 
-  const handle = await tasks.trigger("lead-qualifier", payload);
+    const handle = await tasks.trigger("lead-qualifier", payload);
 
-  // Create a short-lived public token so the browser can subscribe to this run only
-  const publicToken = await auth.createPublicToken({
-    scopes: { read: { runs: [handle.id] } },
-  });
+    const publicToken = await auth.createPublicToken({
+      scopes: { read: { runs: [handle.id] } },
+    });
 
-  return NextResponse.json({ runId: handle.id, publicToken });
+    return NextResponse.json({ runId: handle.id, publicToken });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[/api/analyze]", message);
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
